@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, MapPin, Mail, Facebook, Instagram } from 'lucide-react';
+import { Menu, X, MapPin, Mail, Facebook, Instagram, LayoutDashboard } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const navLinks = [
   { to: '/', label: 'Welcome' },
@@ -10,11 +11,13 @@ const navLinks = [
   { to: '/events', label: 'Events' },
   { to: '/gallery', label: 'Gallery' },
   { to: '/faq', label: 'FAQ' },
+  { to: '/book', label: 'Book' },
 ];
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const { session } = useAuth();
 
   return (
     <header className="sticky top-0 z-50">
@@ -76,11 +79,10 @@ export function Navbar() {
               </Link>
             ))}
             <Link
-              to="/contact"
+              to={session ? '/dashboard' : '/auth'}
               className="ml-4 px-6 py-2.5 bg-primary text-primary-foreground rounded-full font-display font-bold text-sm hover:shadow-lg hover:shadow-primary/25 transition-all inline-flex items-center gap-2"
             >
-              Connect With Us
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              {session ? <><LayoutDashboard className="w-4 h-4" />Dashboard</> : <>Sign in</>}
             </Link>
           </nav>
 
